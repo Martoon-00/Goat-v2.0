@@ -28,4 +28,11 @@
 		iterate(src, function(name, value){ trace(name + " -> " + value) })
 		trace("---")
 	}
+	
+	static function remove(src: Object): Object {
+		for (var i = 1; i < arguments.length; i++){
+			delete src[arguments[i]]
+		}
+		return src
+	}
 }

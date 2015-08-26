@@ -27,24 +27,11 @@ class skills.CastController {
 		})
 		skillCtx.target.getCoord().assign(pointer)
 		
-		// cast animation
-		var mc = MovieClips.attachUniqueMovie(_global._field.upperEffects, skill.castMc, 0, {
-				_rotation: skillCtx.target.getCoord().minus(skill.caster.getCoord()).rotation()  
-		})
-		var followCaster = function(){ skill.caster.getCoord().assign(mc) }
-		followCaster()
-		Functions.makeMultiListener(mc, "onUnload")
-		mc.onUnload = skill.caster.moving.onMove.register(followCaster)
-		
-		mc.onFinish = function(){ removeMovieClip(this) }
-		mc.onInterrupt = function(){ mc.onFinish() }
-		
 		// this
 		casting.push(Objects.copy(listener, {
 			skill: skill,
 			skillCtx: skillCtx,
-			pointer: pointer,
-			mc: mc
+			pointer: pointer
 		}))
 		
 		// initiate
@@ -59,12 +46,12 @@ class skills.CastController {
 			}))
 		}
 		// success when ready
-		removers.register(skill.state.setFinishListener(SkillState.CASTING, function(){  
+		removers.register(skill.state.setFinishListener(SkillState.CAST, function(){  
 			_this.success(skill) 
 			removers.invoke()
 		}))
 		// interrupt when reset
-		removers.register(skill.state.setResetListener(SkillState.CASTING, function(){
+		removers.register(skill.state.setResetListener(SkillState.CAST, function(){
 			_this.interrupt(skill)													 
 			removers.invoke()
 		}))
@@ -74,14 +61,12 @@ class skills.CastController {
 		var info = findSkill(skill)
 		info.skillCtx.onCastFinish()
 		info.skill.use()	
-		info.mc.onFinish()
 		end(skill)
 	}
 	
 	private function interrupt(skill: Skill): Void { // see above ^^^
 		var info = findSkill(skill)
 		info.skillCtx.onCastInterrupt()
-		info.mc.onInterrupt()
 		end(skill)
 	}
 	

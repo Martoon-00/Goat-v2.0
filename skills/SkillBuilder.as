@@ -6,11 +6,9 @@ class skills.SkillBuilder {
 	private static var requiredSlotList = 
 	[
 		"name",
-		"control",  // activation type, can contain "onPress", "onHold", e.t.c. functions, which would be called on skill invokation
-		"castTime",
-		"castMc",
+		"control",  
+		"stateInfo0", "stateInfo1", "stateInfo2", "stateInfo3",
 		"castIconFilter",
-		"coolTime",
 		"multicast",
 		"moveAllowed",
 		"arc",
@@ -19,6 +17,7 @@ class skills.SkillBuilder {
 	private static var multiSlotList = 
 	[
 		"req",      // requirements
+		"targetReq",    // requirements, which depends on target
 		"actions"   // actions
 	]
 		
@@ -31,7 +30,11 @@ class skills.SkillBuilder {
 			.setName(name)
 			.add({
 				name: name,
-				icon: new MovieClipInfo(name + "_icon")
+				icon: new MovieClipInfo(name + "_icon"),
+				stateInfo0: new SkillStateInfo(Number.POSITIVE_INFINITY, null), 
+				stateInfo1: new SkillStateInfo(0, null), 
+				stateInfo2: new SkillStateInfo(0, null), 
+				stateInfo3: new SkillStateInfo(0, null)
 			})
 	}
 	

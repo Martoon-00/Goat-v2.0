@@ -16,13 +16,12 @@ class skills.builder.ChargeAcType {
 		return {
 			control: {
 				onHold: function(skill: Skill): Void { 
-					if (skill.canCast()){ 
-						skill.start()
+					if (skill.start()){  
 						skill.curCtx.timer = new TimeCounter()
 						skill.curCtx.onCastFinish = function() {
 							var ctx = skill.curCtx
-							ctx.chargeTime = Math.min(ctx.timer.get(), skill.castTime) - _this.precastTime
-							ctx.totalChargeTime = skill.castTime - _this.precastTime
+							ctx.chargeTime = Math.min(ctx.timer.get(), skill.stateInfo[SkillState.CAST].duration) - _this.precastTime
+							ctx.totalChargeTime = skill.stateInfo[SkillState.CAST].duration - _this.precastTime
 							ctx.addProperty("chargeFrac", function(){ return this.chargeTime / this.totalChargeTime }, null)
 							delete ctx.timer
 						}
@@ -31,7 +30,7 @@ class skills.builder.ChargeAcType {
 					}
 				},
 				onRelease: function(skill: Skill): Void { 
-					if (skill.state.value != SkillState.CASTING) return;
+					if (skill.state.value != SkillState.CAST) return;
 					
 					var ctx = skill.curCtx
 					if (ctx.timer.get() < _this.precastTime){
@@ -40,17 +39,17 @@ class skills.builder.ChargeAcType {
 						skill.state.value++
 					}
 				}
-			},
+			}
+			,
 			castIconFilter: function(skill: Skill) { 
-				var frac = skill.state.timer.get() / skill.castTime
-				var edge = _this.precastTime / skill.castTime
-				var dr = new Drawer(this)
-				dr.beginFill(HotbarSlot.CAST_COLOR, 60)
-				dr.rectangle(-HotbarSlot.SIZE, HotbarSlot.SIZE, (1 - Math.min(frac, edge) * 2) * HotbarSlot.SIZE, HotbarSlot.SIZE)
-				if (frac > edge){
-					dr.beginFill(HotbarSlot.CHARGE_COLOR, 60)
-					dr.rectangle(-HotbarSlot.SIZE, HotbarSlot.SIZE, (1 - Math.max(frac, edge) * 2) * HotbarSlot.SIZE, (1 - Math.min(frac, edge) * 2) * HotbarSlot.SIZE)
-				}
+				var frac = skill.state.timer.get() / skill.stateInfo[SkillState.CAST].duration
+				var edge = _this.precastTime / skill.stateInfo[SkillState.CAST].duration
+				new Drawer(this)
+					.beginFill(HotbarSlot.CAST_COLOR, 60)
+					.rectangle(-HotbarSlot.SIZE, HotbarSlot.SIZE, (1 - Math.min(frac, edge) * 2) * HotbarSlot.SIZE, HotbarSlot.SIZE)
+					.beginFill(HotbarSlot.CHARGE_COLOR, 60)
+					.rectangle(-HotbarSlot.SIZE, HotbarSlot.SIZE, (1 - Math.max(frac, edge) * 2) * HotbarSlot.SIZE, (1 - edge * 2) * HotbarSlot.SIZE)
+					
 			}
 		}
 	}

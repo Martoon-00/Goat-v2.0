@@ -29,8 +29,8 @@ class SkillPool {
 		
 		_global.skillPool.fire_bolt
 			.plug(new ClickAcType())
-			.plug(new CustomCast(1200, new MovieClipInfo("fire_cast", {color: 0xFFA000})))
-			.plug(new Const("coolTime", 300))
+			.plug(new CustomSkillState(SkillState.CAST, 1200, new MovieClipInfo("fire_cast", {color: 0xFFA000})))
+			.plug(new CustomSkillState(SkillState.COOLDOWN, 300))
 			.plug(new CustomTarget(TargetType.ALL))
 			.plug(new StdProjectileAction(20, new MovieClipInfo("fire_bolt"))
 				.addAction(new OnPlaceEffectAction("fire_explode", {damage: 80}))
@@ -40,9 +40,9 @@ class SkillPool {
 			.build()
 			
 		_global.skillPool.wave
-			.plug(new ChargeAcType(500))
-			.plug(new CustomCast(1200, new MovieClipInfo("fire_cast", {color: 0x47B4ED})))
-			.plug(new Const("coolTime", 2000))
+			.plug(new ChargeAcType(350))
+			.plug(new CustomSkillState(SkillState.CAST, 1200, new MovieClipInfo("fire_cast", {color: 0x47B4ED})))
+			.plug(new CustomSkillState(SkillState.COOLDOWN, 2000))
 			.plug(new CustomTarget(TargetType.ALL))
 			.plug(new StdProjectileAction(8, new MovieClipInfo("wave", {
 				color: 0x47B4ED,

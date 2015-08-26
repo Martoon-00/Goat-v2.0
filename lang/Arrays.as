@@ -10,4 +10,18 @@ class lang.Arrays {
 		for (var i in a) dest.push(a[i])
 		return dest
 	}
+	
+	static function remove(ar: Array, e: Object): Array {
+		for (var i in ar) {
+			if (ar[i] == e) delete ar[i]
+		}
+		return ar
+	}
+	
+	static function find(ar: Array, e: Object): String {
+		for (var i in ar) {
+			if (ar[i] == e) return i
+		}
+		return null
+	}
 }

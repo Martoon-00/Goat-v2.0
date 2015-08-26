@@ -9,13 +9,12 @@ class skills.Skill {
 	var icon: MovieClipInfo
 	
 	var control: Object
-	var canCast: Function
+	var castAvailable: Function
+	var start: Function
 	var use: Function
 	
-	var castTime: Number
-	var castMc: MovieClipInfo
+	var stateInfo: Array
 	var castIconFilter: Function
-	var coolTime: Number
 	var multicast: Number
 	var moveAllowed: Boolean
 	
@@ -33,12 +32,14 @@ class skills.Skill {
 			_this.control[name] = function(){ listener(_this) } 
 		})
 		
-		canCast = function(target: TargetCoord){ 
-			if (_this.state.value != SkillState.NONE) return false
+		castAvailable = function(): Boolean { 
+			if (_this.state.value != SkillState.IDLE) return false
 			if (!caster.casting.available(_this)) return false
 			if (!moveAllowed && Hero(caster).moving.target != null) return false
-			for (var i = 0; i < params.req.length; i++){ 
-				if (!params.req[i](_this, target)) return false
+			
+			var req = params.req
+			for (var i = 0; i < req.length; i++){ 
+				if (!req[i](_this)) return false
 			}
 			return true
 		}
@@ -49,10 +50,28 @@ class skills.Skill {
 			}	
 		}
 		
-		castTime = params.castTime
-		castMc = params.castMc
+		start = function(): Boolean {
+			if (!_this.castAvailable()) return false;
+				
+			var req = params.targetReq
+			for (var i = 0; i < req.length; i++){
+				if (!req[i](_this, _this.curCtx)) return false
+			}
+				
+			var _this = this
+			curCtx = {
+				id: _global.Counter.skillId,
+				skill: this,
+				caster: caster,
+				target: _global._field.getCurTarget(),
+				toString: function(): String { return "[" + _this.name + " context #" + this.id + "]" }
+			}
+			caster.casting.cast(curCtx)			
+			return true
+		}
+		
+		stateInfo = [params.stateInfo0, params.stateInfo1, params.stateInfo2, params.stateInfo3]
 		castIconFilter = params.castIconFilter
-		coolTime = params.coolTime
 		multicast = params.multicast
 		moveAllowed = params.moveAllowed
 		name = params.name
@@ -60,20 +79,6 @@ class skills.Skill {
 		state = new SkillState(this)
 	}
 
-	
-	function start(): Void { 
-		//if (!canCast()) return; 
-		var _this = this
-		
-		curCtx = {
-			id: _global.Counter.skillId,
-			skill: this,
-			caster: caster,
-			target: _global._field.getCurTarget(),
-			toString: function(): String { return "[" + _this.name + " context #" + this.id + "]" }
-		}
-		caster.casting.cast(curCtx)
-	}
 	
 	function toString(): String { return "[Skill: " + name + "]" }
 }

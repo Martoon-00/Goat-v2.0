@@ -65,10 +65,10 @@ class level.HotbarSlot extends MovieClipBase {
 	
 	function applyState(): Void {
 		filter.clear()
-		if (skill.state.value == SkillState.CASTING){
+		if (skill.state.value == SkillState.CAST){
 			skill.castIconFilter.call(filter, skill)
 		} else if (skill.state.value == SkillState.COOLDOWN) {
-			var frac = Math.min(skill.state.timer.get() / skill.coolTime, 1)
+			var frac = Math.min(skill.state.timer.get() / skill.stateInfo[SkillState.COOLDOWN].duration, 1)
 			var dr = new Drawer(filter)
 			dr.beginFill(COOLDOWN_COLOR, 40)
 			dr.transform(Transform.TURN(Math.PI / 4)).perfectPoly(4, HotbarSlot.SIZE, -Math.PI / 4, frac * 2 * Math.PI - Math.PI / 4)

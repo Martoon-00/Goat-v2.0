@@ -8,7 +8,13 @@
 	function register(f: Function): Function {
 		var _this = this
 		var pos = listeners.push(f) - 1
-		return function(){ delete _this.listeners[pos] }		
+		var deleted = false
+		return function(){ 
+			if (!deleted){
+				delete _this.listeners[pos] 
+				deleted = true
+			}
+		}		
 	}
 	
 	function invoke(){ 

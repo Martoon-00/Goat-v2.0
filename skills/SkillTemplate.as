@@ -9,7 +9,7 @@ class skills.SkillTemplate {
 		this.param = param
 	}
 	
-	function newInstance(caster: Creature){
+	function newSkillInstance(caster: Creature){
 		if (caster == undefined) { 
 			trace("SkillTemplate.newInstance() takes exact 1 parameter")
 			return null
