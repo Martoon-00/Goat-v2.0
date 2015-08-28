@@ -27,9 +27,9 @@ class lang.KeyListener {
 		}
 	}
 	
-	static function register(code:Number, listener:Object): Void {
+	static function register(code:Number, listener:Object): Function {
 		listener = Objects.createCopy(listener)
-		listeners[regulateCode(code)].push(listener)
+		var index = listeners[regulateCode(code)].push(listener) - 1
 		
 		listener.held = false
 		listener.watch("held", function(name, oldVal, newVal){ 
@@ -39,6 +39,8 @@ class lang.KeyListener {
 			}
 			return newVal
 		})
+		
+		return Functions.makeExecOnce(function(){ listeners[regulateCode(code)].splice(index, 1) })
 	}
 	
 	private static function regulateCode(code: Number): Number { 

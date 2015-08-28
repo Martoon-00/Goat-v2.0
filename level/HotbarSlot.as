@@ -7,7 +7,8 @@ class level.HotbarSlot extends MovieClipBase {
 	
 	static var CAST_COLOR = 0xE69300
 	static var CHARGE_COLOR = 0xFF2000
-	static var COOLDOWN_COLOR = 0x0000FF
+	static var ACTIVE_COLOR = 0x4000FF
+	static var COOLDOWN_COLOR = 0x0040FF
 	
 	var keys: Array
 	var skill: Skill
@@ -24,7 +25,7 @@ class level.HotbarSlot extends MovieClipBase {
 	
 	private var parent: Hotbar
 	
-	function HotbarSlot() { 
+	function HotbarSlot() {  
 		var _this = this
 		if (keys == undefined) keys = new Array()
 		
@@ -65,14 +66,7 @@ class level.HotbarSlot extends MovieClipBase {
 	
 	function applyState(): Void {
 		filter.clear()
-		if (skill.state.value == SkillState.CAST){
-			skill.castIconFilter.call(filter, skill)
-		} else if (skill.state.value == SkillState.COOLDOWN) {
-			var frac = Math.min(skill.state.timer.get() / skill.stateInfo[SkillState.COOLDOWN].duration, 1)
-			var dr = new Drawer(filter)
-			dr.beginFill(COOLDOWN_COLOR, 40)
-			dr.transform(Transform.TURN(Math.PI / 4)).perfectPoly(4, HotbarSlot.SIZE, -Math.PI / 4, frac * 2 * Math.PI - Math.PI / 4)
-		}
+		skill.iconFilter[skill.state.value].draw(filter, skill)
 	}
 	
 	function reassignKeys(newControl: Object): Void {

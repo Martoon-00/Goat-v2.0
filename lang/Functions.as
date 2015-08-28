@@ -10,7 +10,7 @@
 		return oldVal
 	}
 
-	static function makeMultiListener(obj: Object, prop: String): Void {
+	static function makeMultiListener(obj: Object, prop: String): Function {
 		if (obj[prop] instanceof Array) return;
 		var oldVal = obj[prop]
 		var array = new Array()
@@ -18,6 +18,18 @@
 		obj[prop] = function(){ for (var i = 0; i < array.length; i++) array[i].apply(this, arguments) }
 		obj.watch(prop, function(prop, oldVal, newVal){ array.push(newVal); return oldVal })
 		obj[prop] = oldVal
+		return obj[prop]
+	}
+	
+	static function makeExecOnce(f: Function) {
+		var executed = false
+		return function() {
+			if (!executed) {
+				executed = true
+				return f.apply(this, arguments)
+			}
+			return null
+		}
 	}
 	
 }

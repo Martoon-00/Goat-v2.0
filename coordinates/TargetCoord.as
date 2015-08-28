@@ -25,4 +25,6 @@ class coordinates.TargetCoord {
 	function fixed(): TargetCoord {
 		return ofCoord(getCoord())
 	}
+	
+	function toString(): String { return "[TargetCoord: " + getCoord() + " - " + getTarget() + "]" }
 }

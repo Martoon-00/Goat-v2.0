@@ -24,4 +24,12 @@ class lang.Arrays {
 		}
 		return null
 	}
+	
+	static function check(ar: Array, ok: Boolean): Boolean {
+		var args = arguments.slice(2)
+		for (var i in ar) {
+			if (ar[i].apply(null, args) != ok) return !ok
+		}
+		return ok
+	}
 }

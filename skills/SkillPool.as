@@ -53,6 +53,17 @@ class SkillPool {
 			.plug(new Const("arc", 150))
 			.build()
 			
+		_global.skillPool.jet
+			.plug(new ChannelAcType())
+			.plug(new CustomSkillState(SkillState.CAST, 300, new MovieClipInfo("fire_cast", {color: 0x47B4ED})))
+			.plug(new CustomSkillState(SkillState.ACTIVE, 1200))
+			.plug(new CustomSkillState(SkillState.COOLDOWN, 700))
+			.plug(new CustomTarget(TargetType.ALL))
+			.plug(new OnCasterEffectAction("jet", {color: 0x47B4ED}))
+			.plug(new Const("multicast", 8))
+			.plug(new Const("moveAllowed", true))
+			.plug(new Const("arc", 150))
+			.build()
 			
 	}
 }
