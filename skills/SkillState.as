@@ -1,6 +1,7 @@
 ﻿import skills.*
 import lang.*
 import date.*
+import skills.builder.*
 
 class skills.SkillState {
 	static var IDLE = 0
@@ -9,6 +10,19 @@ class skills.SkillState {
 	static var COOLDOWN = 3
 	
 	private static var LAST_STATE = 3
+	
+	static var DEFAULT_STATE_INFO = [
+		new SkillStateInfo(Number.POSITIVE_INFINITY, null), 
+		new SkillStateInfo(0, null),
+		new SkillStateInfo(0, null),
+		new SkillStateInfo(0, null)
+	]
+	static var DEFAULT_ICON_FILTER = [
+		null,
+		new CastIconFilter(),
+		new ActiveIconFilter(),
+		new CooldownIconFilter()
+	]
 	
 	var skill: Skill
 	var limits: Array
@@ -34,10 +48,19 @@ class skills.SkillState {
 	}
 	
 	function onChange(prop, oldVal, newVal) {
-		listeners[switchName(oldVal, newVal)].invoke() 
-		if (oldVal + 1 == newVal) onForward()
-		else if (newVal == 0) onReset()
-
+		var success: Boolean
+		if (oldVal + 1 == newVal) success = true
+		else if (newVal == 0) success = false
+		else trace("Unknown state change")
+		
+		listeners[switchName(oldVal, newVal)].invoke(success)
+		if (newVal == 0 || newVal == LAST_STATE + 1) {
+			for (var i in listeners) listeners[i].clear()
+			skill.curCtx = null
+		}
+		if (success) onForward()
+		else onReset()
+		
 		setEffectMovie(newVal)
 		
 		timer.restart() 
@@ -69,13 +92,9 @@ class skills.SkillState {
 		effectMc.onInterrupt = function(){ _this.effectMc.onFinish() }
 	}
 	
-	function setFinishListener(value: Number, f: Function): Function { 
-		return listeners[switchName(value, value + 1)].register(f)
-	}
-	
-	function setResetListener(value: Number, f: Function): Function {
-		return listeners[switchName(value, 0)].register(f)
-	}
+	function setFinishListener(value: Number, f: Function) { listeners[switchName(value, value + 1)].register(f) }
+	function setResetListener (value: Number, f: Function) { listeners[switchName(value, 0)].register(f) }
+	function setEndListener   (value: Number, f: Function) { setFinishListener(value, f); setResetListener(value, f) }
 	
 	function enterFrame() { 
 		while (timer.get() >= limits[value]) {  

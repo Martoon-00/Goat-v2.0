@@ -6,9 +6,7 @@ class skills.SkillBuilder {
 	private static var requiredSlotList = 
 	[
 		"name",
-		"control",  
-		"stateInfo0", "stateInfo1", "stateInfo2", "stateInfo3",
-		"castIconFilter",
+		"control", 
 		"multicast",
 		"moveAllowed",
 		"arc",
@@ -20,26 +18,28 @@ class skills.SkillBuilder {
 		"targetReq",    // requirements, which depends on target
 		"actions"   // actions
 	]
+	private static var mergeableSlotList = 
+	[ 
+		"stateInfo",
+		"iconFilter"
+	]
 		
 	private var builder: SlotBuilder
 	
 	private var descs = new Array()  // descriptions
 	
 	function SkillBuilder(name: String){  
-		builder = new SlotBuilder(requiredSlotList, multiSlotList)
+		builder = new SlotBuilder(requiredSlotList, multiSlotList, mergeableSlotList)
 			.setName(name)
 			.add({
 				name: name,
 				icon: new MovieClipInfo(name + "_icon"),
-				stateInfo0: new SkillStateInfo(Number.POSITIVE_INFINITY, null), 
-				stateInfo1: new SkillStateInfo(0, null), 
-				stateInfo2: new SkillStateInfo(0, null), 
-				stateInfo3: new SkillStateInfo(0, null)
+				stateInfo: SkillState.DEFAULT_STATE_INFO,
+				iconFilter: SkillState.DEFAULT_ICON_FILTER
 			})
 	}
 	
 	function plug(plug): SkillBuilder {  
-		descs = descs.concat(plug.description())
 		builder.plug(plug) 
 		return this 
 	}
@@ -50,6 +50,7 @@ class skills.SkillBuilder {
 	}
 	
 	function build(): SkillTemplate { 
+		//Objects.print(builder.slots.iconFilter)
 		return new SkillTemplate(builder.build()) 
 	}
 	

@@ -35,7 +35,7 @@ class skills.builder.StdProjectileAction {
 	function make() {
 		var _this = this
 		return {
-			actions: function(skillCtx){ 
+			actions: function(skillCtx) { 
 				var mc = MovieClips.attachUniqueMovie(_global._field.upperEffects, "std_projectile", null, {
 					keeper: _this,
 					ctx: skillCtx

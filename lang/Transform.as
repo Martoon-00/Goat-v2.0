@@ -39,4 +39,8 @@ class lang.Transform {
 	static function AROUND(x: Number, y: Number, angle: Number): Transform {
 		return MOVE(-x, -y).then(TURN(angle)).then(MOVE(x, y))
 	}
+	
+	static function DILATATION(k: Number) {
+		return new Transform(k, 0, 0, 0, k, 0)
+	}
 }

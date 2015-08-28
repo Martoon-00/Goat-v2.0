@@ -9,7 +9,7 @@ class util.slots.SlotBuilder {
 	
 	private var name: String
 	
-	function SlotBuilder(required: Array, multi: Array) { 
+	function SlotBuilder(required: Array, multi: Array, mergeable: Array) { 
 		slots = new Object()
 		plugs = new Object() 
 		
@@ -18,6 +18,9 @@ class util.slots.SlotBuilder {
 		}
 		for (var i in multi){
 			slots[multi[i]] = new Array()
+		}
+		for (var i in mergeable){
+			slots[mergeable[i]] = { __merge: true }
 		}
 	}
 	
@@ -30,6 +33,8 @@ class util.slots.SlotBuilder {
 				plugs[i] = plug
 			} else if (slots[i].concat != undefined){ 
 				slots[i] = slots[i].concat(plug[i])
+			} else if (slots[i].__merge) {
+				Objects.copy(plug[i], slots[i])
 			} else {
 				slots[i] = plug[i]
 				plugs[i] = plug
@@ -48,6 +53,7 @@ class util.slots.SlotBuilder {
 			if (slots[i] == EMPTY_SLOT) { 
 				error(Strings.format("Slot '%s' is empty", i))
 			}
+			delete slots[i].__merge
 		}
 		return slots
 	}

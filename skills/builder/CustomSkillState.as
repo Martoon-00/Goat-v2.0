@@ -11,8 +11,8 @@ class skills.builder.CustomSkillState {
 	}
 	
 	function make() {
-		var res = new Object()
-		res["stateInfo" + state] = info
-		return res;
+		return {
+			stateInfo: Objects.create(state, info)
+		}
 	}
 }

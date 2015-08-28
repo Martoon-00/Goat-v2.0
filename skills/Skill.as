@@ -14,7 +14,7 @@ class skills.Skill {
 	var use: Function
 	
 	var stateInfo: Array
-	var castIconFilter: Function
+	var iconFilter: Array
 	var multicast: Number
 	var moveAllowed: Boolean
 	
@@ -36,15 +36,11 @@ class skills.Skill {
 			if (_this.state.value != SkillState.IDLE) return false
 			if (!caster.casting.available(_this)) return false
 			if (!moveAllowed && Hero(caster).moving.target != null) return false
-			
-			var req = params.req
-			for (var i = 0; i < req.length; i++){ 
-				if (!req[i](_this)) return false
-			}
+			if (!Arrays.check(params.req, true, _this)) return false
 			return true
 		}
 		
-		use = function(): Void {
+		use = function(): Void {  
 			for (var i = 0; i < params.actions.length; i++) {
 				params.actions[i](_this.curCtx)
 			}	
@@ -52,11 +48,7 @@ class skills.Skill {
 		
 		start = function(): Boolean {
 			if (!_this.castAvailable()) return false;
-				
-			var req = params.targetReq
-			for (var i = 0; i < req.length; i++){
-				if (!req[i](_this, _this.curCtx)) return false
-			}
+			if (!Arrays.check(params.targetReq, true, _this, _this.curCtx))	return false
 				
 			var _this = this
 			curCtx = {
@@ -64,14 +56,19 @@ class skills.Skill {
 				skill: this,
 				caster: caster,
 				target: _global._field.getCurTarget(),
-				toString: function(): String { return "[" + _this.name + " context #" + this.id + "]" }
+				toString: function(): String { return "[" + _this.name + ": ctx #" + this.id + "]" }
 			}
+			_this.state.setEndListener(SkillState.ACTIVE, Functions.makeMultiListener(curCtx, "onActivationEnd"))
+			
+			_this.state.setFinishListener(SkillState.CAST, function(){ _this.use() })
 			caster.casting.cast(curCtx)			
+			state.start()
+			
 			return true
 		}
 		
-		stateInfo = [params.stateInfo0, params.stateInfo1, params.stateInfo2, params.stateInfo3]
-		castIconFilter = params.castIconFilter
+		stateInfo = Objects.copy(params.stateInfo, new Array())
+		iconFilter = Objects.copy(params.iconFilter, new Array())
 		multicast = params.multicast
 		moveAllowed = params.moveAllowed
 		name = params.name

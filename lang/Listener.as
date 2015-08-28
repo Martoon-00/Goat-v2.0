@@ -17,10 +17,13 @@
 		}		
 	}
 	
-	function invoke(){ 
-		for (var i in listeners){ 
-			listeners[i].apply(null, arguments)
-		}
+	function invoke() : Void {  
+		var args = arguments
+		lang.Objects.reverseIterate(listeners, function(name, value){ value.apply(null, args) })
+	}
+
+	function clear(): Void {
+		listeners = new Array()
 	}
 	
 }

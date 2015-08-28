@@ -27,57 +27,27 @@ class skills.CastController {
 		})
 		skillCtx.target.getCoord().assign(pointer)
 		
+		// interrupt on move
+		var moveDeli: Function
+		if (!skill.moveAllowed) 
+			moveDeli = skill.caster.moving.onMove.register(function(){ skill.state.reset() })
+		skill.state.setEndListener(SkillState.CAST, function(){ _this.end(skill) })
+		
 		// this
 		casting.push(Objects.copy(listener, {
 			skill: skill,
 			skillCtx: skillCtx,
-			pointer: pointer
+			pointer: pointer,
+			moveDeli: moveDeli
 		}))
 		
-		// initiate
-		skill.state.start()
-		
-		var removers = new Listener()
-		// interrupt on move
-		if (!skill.moveAllowed) {
-			removers.register(skill.caster.moving.onMove.register(function(){  
-				skill.state.reset()
-				removers.invoke()
-			}))
-		}
-		// success when ready
-		removers.register(skill.state.setFinishListener(SkillState.CAST, function(){  
-			_this.success(skill) 
-			removers.invoke()
-		}))
-		// interrupt when reset
-		removers.register(skill.state.setResetListener(SkillState.CAST, function(){
-			_this.interrupt(skill)													 
-			removers.invoke()
-		}))
-	}
-	
-	private function success(skill: Skill): Void {  // not for handling outside, manage with SkillState instead
-		var info = findSkill(skill)
-		info.skillCtx.onCastFinish()
-		info.skill.use()	
-		end(skill)
-	}
-	
-	private function interrupt(skill: Skill): Void { // see above ^^^
-		var info = findSkill(skill)
-		info.skillCtx.onCastInterrupt()
-		end(skill)
 	}
 	
 	private function end(skill: Skill): Void {  
 		var index = findSkillIndex(skill)
 		casting[index].pointer.onDestroy()
+		casting[index].moveDeli()
 		casting.splice(index, 1)
-		
-		delete skill.curCtx.onCastFinish
-		delete skill.curCtx.onCastInterrupt
-		skill.curCtx = null
 	}
 	
 	function findSkill(skill: Skill): Object {
