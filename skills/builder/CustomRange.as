@@ -1,4 +1,7 @@
-﻿class skills.builder.CustomRange {
+﻿import coordinates.*
+import skills.*
+
+class skills.builder.CustomRange {
 	private var range: Number
 	
 	function CustomRange(range: Number) {
@@ -6,11 +9,11 @@
 	}
 	
 	function make() {
+		var _this = this
 		return {
-			req: function(skillCtx){
-				var caster = skillCtx.caster
-				var target = skillCtx.target
-				return caster.getCoord().minus(target.getCoord()).dist() <= range
+			targetReq: function(skill: Skill, target: TargetCoord){
+				var caster = skill.caster
+				return caster.getCoord().minus(target.getCoord()).dist() <= _this.range
 			}
 		}
 	}

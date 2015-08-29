@@ -4,8 +4,9 @@ import skills.*
 import level.*
 import lang.*
 import skills.builder.*
+import skills.builder.filter.*
 
-class skills.builder.ChargeAcType {
+class skills.builder.actype.ChargeAcType {
 	private var precastTime: Number
 	
 	function ChargeAcType(precastTime: Number){

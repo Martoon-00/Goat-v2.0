@@ -2,7 +2,7 @@
 import skills.*
 import level.*
 
-class skills.builder.ChannelAcType {
+class skills.builder.actype.ChannelAcType {
 	
 	function make() {
 		return {

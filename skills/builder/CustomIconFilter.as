@@ -1,6 +1,6 @@
 ﻿import lang.*
 import skills.*
-import skills.builder.*
+import skills.builder.filter.*
 
 class skills.builder.CustomIconFilter {
 	private var state: Number

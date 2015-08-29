@@ -2,7 +2,7 @@
 import util.slots.*
 import lang.*
 
-class skills.SkillBuilder {
+class skills.builder.SkillBuilder {
 	private static var requiredSlotList = 
 	[
 		"name",

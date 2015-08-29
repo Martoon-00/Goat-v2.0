@@ -1,6 +1,6 @@
 ﻿import lang.*
 
-class skills.builder.TraceAction {
+class skills.builder.action.TraceAction {
 	private var message: String
 	
 	function TraceAction(message: String) {

@@ -1,6 +1,6 @@
 ﻿import lang.*
 
-class skills.builder.OnPlaceEffectAction {
+class skills.builder.action.OnPlaceEffectAction {
 	private var effectMc: String
 	private var params: Object
 	

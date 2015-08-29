@@ -1,7 +1,7 @@
 ﻿import skills.*
 import lang.*
 
-class skills.builder.StdProjectileAction {
+class skills.builder.action.StdProjectileAction {
 	private var mcInfo: MovieClipInfo
 	private var speed: Number
 	private var homing: Boolean

@@ -1,9 +1,9 @@
 ﻿import lang.*
 import level.*
 import skills.*
-import skills.builder.*
+import skills.builder.filter.*
 
-class skills.builder.ChargeIconFilter implements IconFilter {
+class skills.builder.filter.ChargeIconFilter implements IconFilter {
 	private var precastTime: Number
 	
 	function ChargeIconFilter(precastTime: Number) {

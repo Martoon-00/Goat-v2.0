@@ -1,5 +1,7 @@
 ﻿import skills.*
 import skills.builder.*
+import skills.builder.actype.*
+import skills.builder.action.*
 import lang.*
 import creatures.*
 
@@ -32,6 +34,7 @@ class SkillPool {
 			.plug(new CustomSkillState(SkillState.CAST, 1200, new MovieClipInfo("fire_cast", {color: 0xFFA000})))
 			.plug(new CustomSkillState(SkillState.COOLDOWN, 300))
 			.plug(new CustomTarget(TargetType.ALL))
+			.plug(new CustomRange(250))
 			.plug(new StdProjectileAction(20, new MovieClipInfo("fire_bolt"))
 				.addAction(new OnPlaceEffectAction("fire_explode", {damage: 80}))
 			).plug(new Const("multicast", 2))

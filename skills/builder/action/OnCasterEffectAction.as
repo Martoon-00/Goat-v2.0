@@ -1,10 +1,10 @@
 ﻿import lang.*
 
-class skills.builder.OnCasterEffectAction {
+class skills.builder.action.OnCasterEffectAction {
 	private var effectMc: String
 	private var params: Object
 	
-	function OnCasterEffectAction(effectMc: String, params: Object) {
+	function OnCasterEffectAction(effectMc: String, params: Object) { 
 		this.effectMc = effectMc
 		this.params = params
 	}
@@ -12,7 +12,7 @@ class skills.builder.OnCasterEffectAction {
 	function make() {
 		var _this = this
 		return {
-			actions: function(skillCtx) {    
+			actions: function(skillCtx) {   
 				var mc = MovieClips.attachUniqueMovie(_global._field, _this.effectMc, 10000, Objects.createCopy(_this.params, {
 					ctx: skillCtx  
 				}))

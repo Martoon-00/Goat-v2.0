@@ -1,9 +1,9 @@
 ﻿import lang.*
 import level.*
 import skills.*
-import skills.builder.*
+import skills.builder.filter.*
 
-class skills.builder.CooldownIconFilter implements IconFilter {
+class skills.builder.filter.CooldownIconFilter implements IconFilter {
 	
 	function draw(filter: MovieClip, skill: Skill): Void {
 		var frac = Range.UNIT.bound(skill.state.timer.get() / skill.stateInfo[SkillState.COOLDOWN].duration)

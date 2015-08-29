@@ -2,7 +2,7 @@
 import lang.*
 import level.*
 
-class skills.builder.ClickAcType {
+class skills.builder.actype.ClickAcType {
 	
 	function make(){ 
 		return {

@@ -48,14 +48,16 @@ class skills.Skill {
 		
 		start = function(): Boolean {
 			if (!_this.castAvailable()) return false;
-			if (!Arrays.check(params.targetReq, true, _this, _this.curCtx))	return false
+			
+			var target = _global._field.getCurTarget()
+			if (!Arrays.check(params.targetReq, true, _this, target))	return false
 				
 			var _this = this
 			curCtx = {
 				id: _global.Counter.skillId,
 				skill: this,
 				caster: caster,
-				target: _global._field.getCurTarget(),
+				target: target,
 				toString: function(): String { return "[" + _this.name + ": ctx #" + this.id + "]" }
 			}
 			_this.state.setEndListener(SkillState.ACTIVE, Functions.makeMultiListener(curCtx, "onActivationEnd"))

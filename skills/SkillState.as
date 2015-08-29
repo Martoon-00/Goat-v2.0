@@ -2,6 +2,7 @@
 import lang.*
 import date.*
 import skills.builder.*
+import skills.builder.filter.*
 
 class skills.SkillState {
 	static var IDLE = 0
