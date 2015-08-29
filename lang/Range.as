@@ -1,6 +1,8 @@
 ﻿import lang.*
 
 class lang.Range {
+	static var UNIT = new Range(0, 1)
+	
 	private var a: Number
 	private var b: Number
 	

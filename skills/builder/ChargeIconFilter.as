@@ -11,7 +11,7 @@ class skills.builder.ChargeIconFilter implements IconFilter {
 	}
 	
 	function draw(filter: MovieClip, skill: Skill): Void {
-		var frac = new Range(0, 1).bound(skill.state.timer.get() / skill.stateInfo[SkillState.CAST].duration)
+		var frac = Range.UNIT.bound(skill.state.timer.get() / skill.stateInfo[SkillState.CAST].duration)
 		var edge = precastTime / skill.stateInfo[SkillState.CAST].duration
 		new Drawer(filter)
 			.transform(Transform.DILATATION(HotbarSlot.SIZE))
