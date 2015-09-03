@@ -14,7 +14,7 @@ class lang.MovieClips {
 	
 	static function attachMovie(parent: MovieClip, mcInfo, mcName: String, startDepth: Number, params: Object) {
 		if (!(mcInfo instanceof MovieClipInfo)) mcInfo = new MovieClipInfo(mcInfo)
-		return parent.attachMovie(mcInfo.name, mcName, getAvailableDepth(parent, startDepth), Objects.copy(mcInfo.param, Objects.createCopy(params)))
+		return parent.attachMovie(mcInfo.name, mcName, getAvailableDepth(parent, startDepth), Objects.createCopy(mcInfo.param, params))
 	}
 	
 	static function attachUniqueMovie(parent: MovieClip, libName, startDepth: Number, params: Object) {

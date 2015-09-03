@@ -1,6 +1,15 @@
 ﻿import lang.*
 
 class lang.Arrays {
+	private static var _lol = new FuncInvoker(init)
+	private static function init() {
+		var proto = Array.prototype
+		
+		proto.last = function() { return this[this.length - 1] }
+		
+		_global.ASSetPropFlags(proto, null, 0x7)
+	}
+	
 	
 	static function concat(dest: Array, src: Array): Array {
 		if (dest == undefined) dest = new Array()

@@ -24,7 +24,7 @@ class util.slots.SlotBuilder {
 		}
 	}
 	
-	function add(plug: Object): SlotBuilder {
+	function add(plug): SlotBuilder {
 		for (var i in plug){ 
 			if (slots[i] == undefined){
 				error(Strings.format("No slot '%s' needed, but plug tries to add it", i))
@@ -34,7 +34,7 @@ class util.slots.SlotBuilder {
 			} else if (slots[i].concat != undefined){ 
 				slots[i] = slots[i].concat(plug[i])
 			} else if (slots[i].__merge) {
-				Objects.copy(plug[i], slots[i])
+				plug[i].copy(slots[i])
 			} else {
 				slots[i] = plug[i]
 				plugs[i] = plug

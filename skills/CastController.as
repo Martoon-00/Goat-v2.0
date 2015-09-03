@@ -9,15 +9,15 @@ class skills.CastController {
 		var _this = this
 	}
 	
-	function available(skill: Skill): Boolean { 
+	function available(skill: Skill): Boolean {  
 		if (skill.multicast < casting.length) return false
 		for (var i in casting) { 
 			if (casting[i].skill.multicast < casting.length) return false
-		}
+		} 
 		return true
 	}
 	
-	function cast(skillCtx: Object, listener: Object): Void {
+	function cast(skillCtx: Object): Void {
 		var _this = this
 		var skill = skillCtx.skill
 		
@@ -34,12 +34,12 @@ class skills.CastController {
 		skill.state.setEndListener(SkillState.CAST, function(){ _this.end(skill) })
 		
 		// this
-		casting.push(Objects.copy(listener, {
+		casting.push({
 			skill: skill,
 			skillCtx: skillCtx,
 			pointer: pointer,
 			moveDeli: moveDeli
-		}))
+		})
 		
 	}
 	

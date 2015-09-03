@@ -10,6 +10,6 @@ class skills.builder.filter.ActiveIconFilter implements IconFilter {
 		new Drawer(filter)
 			.beginFill(HotbarSlot.ACTIVE_COLOR, 20)
 			.transform(Transform.DILATATION(HotbarSlot.SIZE))
-			.rectangle(-1, 1, -1, frac * 2 - 1)
+			.rectangle(-1, 1, 1, frac * 2 - 1)
 	}
 }

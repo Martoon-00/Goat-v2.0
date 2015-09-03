@@ -50,7 +50,7 @@ class skills.Skill {
 			if (!_this.castAvailable()) return false;
 			
 			var target = _global._field.getCurTarget()
-			if (!Arrays.check(params.targetReq, true, _this, target))	return false
+			if (!Arrays.check(params.targetReq, true, _this, target)) return false
 				
 			var _this = this
 			curCtx = {
@@ -69,8 +69,8 @@ class skills.Skill {
 			return true
 		}
 		
-		stateInfo = Objects.copy(params.stateInfo, new Array())
-		iconFilter = Objects.copy(params.iconFilter, new Array())
+		stateInfo = params.stateInfo.copy(new Array())
+		iconFilter = params.iconFilter.copy(new Array())
 		multicast = params.multicast
 		moveAllowed = params.moveAllowed
 		name = params.name

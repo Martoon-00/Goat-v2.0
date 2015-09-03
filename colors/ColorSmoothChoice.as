@@ -2,8 +2,8 @@
 	private var a:Array
 	
 	function ColorSmoothChoice(){ // arguments - key colors
-		a = arguments
-		if (a.length == 1) a.push(a[0])
+		a = new Array()
+		for (var i = 0; i < arguments.length; i++) a = a.concat(arguments[i])
 	}
 	
 	function get(k: Number){

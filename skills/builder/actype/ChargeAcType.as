@@ -15,33 +15,32 @@ class skills.builder.actype.ChargeAcType {
 	
 	function make(){
 		var _this = this
-		return Objects.copy(
-			{
-				control: {
-					onHold: function(skill: Skill): Void { 
-						if (skill.start()){  
-							skill.curCtx.timer = new TimeCounter()
-							skill.state.setFinishListener(SkillState.CAST, function() {  
-								var ctx = skill.curCtx
-								ctx.chargeTime = Math.min(ctx.timer.get(), skill.stateInfo[SkillState.CAST].duration) - _this.precastTime
-								ctx.totalChargeTime = skill.stateInfo[SkillState.CAST].duration - _this.precastTime
-								ctx.addProperty("chargeFrac", function(){ return this.chargeTime / this.totalChargeTime }, null)
-								delete ctx.timer
-							})
-						}
-					},
-					onRelease: function(skill: Skill): Void { 
-						if (skill.state.value != SkillState.CAST) return;
-						
-						var ctx = skill.curCtx
-						if (ctx.timer.get() < _this.precastTime){
-							skill.state.reset()
-						} else {
-							skill.state.value++
-						}
+		return {
+			control: {
+				onHold: function(skill: Skill): Void { 
+					if (skill.start()){  
+						skill.curCtx.timer = new TimeCounter()
+						skill.state.setFinishListener(SkillState.CAST, function() {  
+							var ctx = skill.curCtx
+							ctx.chargeTime = Math.min(ctx.timer.get(), skill.stateInfo[SkillState.CAST].duration) - _this.precastTime
+							ctx.totalChargeTime = skill.stateInfo[SkillState.CAST].duration - _this.precastTime
+							ctx.addProperty("chargeFrac", function(){ return this.chargeTime / this.totalChargeTime }, null)
+							delete ctx.timer
+						})
+					}
+				},
+				onRelease: function(skill: Skill): Void { 
+					if (skill.state.value != SkillState.CAST) return;
+					
+					var ctx = skill.curCtx
+					if (ctx.timer.get() < _this.precastTime){
+						skill.state.reset()
+					} else {
+						skill.state.value++
 					}
 				}
-			},
+			}
+		}.copy(
 			new CustomIconFilter(SkillState.CAST, new ChargeIconFilter(precastTime)).make()
 		)
 	}

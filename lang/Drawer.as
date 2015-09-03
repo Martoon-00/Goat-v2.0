@@ -32,6 +32,7 @@ class lang.Drawer {
 	function lineStyle(): Drawer { mc.lineStyle.apply(mc, arguments); return this }
 	function clear(): Drawer { mc.clear.apply(mc, arguments); return this }
 	function beginFill(): Drawer { mc.beginFill.apply(mc, arguments); return this }
+	function beginGradientFill(): Drawer { mc.beginGradientFill.apply(mc, arguments); return this }
 	function endFill(): Drawer { mc.endFill.apply(mc, arguments); return this }
 	
 	function getMovieClip(): MovieClip { return mc }

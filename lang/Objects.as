@@ -1,13 +1,45 @@
-﻿class lang.Objects {
-	static function copy(src: Object, dist: Object) {
-		iterate(src, function (name, value){ dist[name] = value })
-		return dist
+﻿import lang.*
+
+class lang.Objects {
+	private static var _lol = new FuncInvoker(init)
+	private static function init() { 
+		var proto = Object.prototype
+		
+		proto.size = function() {
+			var k = 0
+			iterate(this, function(){ k++ })
+			return k
+		}
+		
+		proto.isEmpty = function(): Boolean {
+			return size() == 0
+		}
+	
+		proto.print = function(): Void {
+			iterate(this, function(name, value){ trace(name + " -> " + value) })
+			trace("---")
+		}
+		
+		proto.set = function(): Object {
+			for (var i = 1; i < arguments.length; i += 2) {
+				this[arguments[i]] = arguments[i + 1]
+			}
+			return this
+		}
+		
+		proto.copy = function(dist: Object) {
+			iterate(this, function (name, value){ dist[name] = value })
+			return dist	
+		}
+		
+		_global.ASSetPropFlags(proto, null, 0x7)
 	}
+	
 	
 	static function createCopy(): Object {
 		var r = new Object()
 		for (var i = 0; i < arguments.length; i++)
-			copy(arguments[i], r)
+			arguments[i].copy(r)
 		return r
 	}
 	
@@ -39,13 +71,6 @@
 	static function remove(src: Object): Object {
 		for (var i = 1; i < arguments.length; i++){
 			delete src[arguments[i]]
-		}
-		return src
-	}
-	
-	static function set(src: Object): Object {
-		for (var i = 1; i < arguments.length; i += 2) {
-			src[arguments[i]] = arguments[i + 1]
 		}
 		return src
 	}
