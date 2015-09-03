@@ -32,6 +32,8 @@ class lang.Objects {
 			return dist	
 		}
 		
+		proto.trace = function() { trace(this) }
+		
 		_global.ASSetPropFlags(proto, null, 0x7)
 	}
 	

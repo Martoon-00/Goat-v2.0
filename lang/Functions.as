@@ -10,14 +10,17 @@
 		return oldVal
 	}
 
-	static function makeMultiListener(obj: Object, prop: String): Function {
+	static function makeMultiListener(obj: Object, prop: String, listener: Function): Function {
 		if (obj[prop] instanceof Array) return;
 		var oldVal = obj[prop]
 		var array = new Array()
 
 		obj[prop] = function(){ for (var i = 0; i < array.length; i++) array[i].apply(this, arguments) }
 		obj.watch(prop, function(prop, oldVal, newVal){ array.push(newVal); return oldVal })
+		
 		obj[prop] = oldVal
+		if (listener != undefined) obj[prop] = listener
+		
 		return obj[prop]
 	}
 	

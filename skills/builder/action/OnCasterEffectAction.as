@@ -1,4 +1,5 @@
 ﻿import lang.*
+import util.motion.*
 
 class skills.builder.action.OnCasterEffectAction {
 	private var effectMc: String
@@ -15,8 +16,7 @@ class skills.builder.action.OnCasterEffectAction {
 			actions: function(skillCtx) {   
 				var mc = MovieClips.attachUniqueMovie(_global._field, _this.effectMc, 10000, Objects.createCopy(_this.params, {
 					ctx: skillCtx  
-				}))
-				skillCtx.skill.caster.getCoord().assign(mc)
+				})).setMotion(new ImmediateMotion(), function(){ return skillCtx.caster.getCoord() })
 			}
 		}
 	}

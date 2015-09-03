@@ -3,6 +3,7 @@ import lang.*
 import date.*
 import skills.builder.*
 import skills.builder.filter.*
+import util.motion.*
 
 class skills.SkillState {
 	static var IDLE = 0
@@ -82,12 +83,7 @@ class skills.SkillState {
 		
 		effectMc = MovieClips.attachUniqueMovie(_global._field.upperEffects, skill.stateInfo[state].mc, 0, {
 			skill: _this.skill																   
-		})
-		var followCaster = function(){ _this.skill.caster.getCoord().assign(_this.effectMc) }
-		followCaster()
-		effectMc.unlockMovement = skill.caster.moving.onMove.register(followCaster)
-		Functions.makeMultiListener(effectMc, "onUnload")
-		effectMc.onUnload = function(){ _this.effectMc.unlockMovement() }
+		}).setMotion(new ImmediateMotion(), function(){ return _this.skill.caster.getCoord() })
 		
 		effectMc.onFinish = function(){ removeMovieClip(this) }
 		effectMc.onInterrupt = function(){ _this.effectMc.onFinish() }

@@ -1,6 +1,19 @@
 ﻿import lang.*
+import util.motion.*
 
 class lang.MovieClips {
+	private static var _lol = new FuncInvoker(init)
+	private static function init() {
+		var proto = MovieClip.prototype
+		
+		proto.setMotion = function(mome: MotionManager, target: Function): MovieClip {
+			var motion = this._motion = new Motion(this, mome, target)
+			Functions.makeMultiListener(this, "onUnload", function(){ motion.unregister() })
+			return this
+		}
+		
+		_global.ASSetPropFlags(proto, null, 0x7)
+	}
 	
 	static function getAvailableDepth(mc: MovieClip, startDepth: Number){
 		for (var depth = Optional.of(startDepth).orElse(1000); depth < 1e5; depth++){ 

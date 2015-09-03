@@ -9,8 +9,11 @@ class globals.Timing {
 	
 	static var _lol = new FuncInvoker(init)
 	
-	static function addEnterFrame(f: Function): Void {
-		enterFrameList.push(f)
+	static function addEnterFrame(f: Function): Function {
+		var index = enterFrameList.push(f) - 1
+		return function(){
+			delete enterFrameList[index]
+		}
 	}
 	
 	static function execOnce(f: Function): Void {
