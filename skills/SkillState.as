@@ -83,7 +83,7 @@ class skills.SkillState {
 		
 		effectMc = MovieClips.attachUniqueMovie(_global._field.upperEffects, skill.stateInfo[state].mc, 0, {
 			skill: _this.skill																   
-		}).setMotion(new ImmediateMotion(), function(){ return _this.skill.caster.getCoord() })
+		}).setMotion(new ImmediateMotion(), function(){ return _this.skill.caster._pos })
 		
 		effectMc.onFinish = function(){ removeMovieClip(this) }
 		effectMc.onInterrupt = function(){ _this.effectMc.onFinish() }

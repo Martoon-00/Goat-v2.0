@@ -11,7 +11,7 @@ class coordinates.TargetCoord {
 	}
 	
 	static function ofTarget(target: Material){
-		return new TargetCoord(target, target.getCoord)
+		return new TargetCoord(target, function(){ return target._pos })
 	}
 	
 	static function ofCoord(coord: Coord){

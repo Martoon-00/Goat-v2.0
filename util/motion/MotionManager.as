@@ -3,4 +3,5 @@ import coordinates.*
 
 interface MotionManager {
 	function step(start: Coord, dest: Coord): Coord
+	
 }

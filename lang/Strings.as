@@ -60,7 +60,9 @@
 				to = arg.slice(0, Math.min(length, arg.length))
 			} else if (type == "d") {
 				to = arg
-			} else if (type == "f") {
+			} else if (type == "f") { 
+				if (length == Number.POSITIVE_INFINITY) length = 7
+				if (Number(arg) == null) throw new Error("[Strings.format()] Expected float, but got " + arg)
 				to = int(arg)
 				arg -= to
 				to += "."

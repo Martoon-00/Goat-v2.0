@@ -1,5 +1,6 @@
 ﻿import lang.*
 import util.motion.*
+import coordinates.*
 
 class lang.MovieClips {
 	private static var _lol = new FuncInvoker(init)
@@ -9,6 +10,24 @@ class lang.MovieClips {
 		proto.setMotion = function(mome: MotionManager, target: Function): MovieClip {
 			var motion = this._motion = new Motion(this, mome, target)
 			Functions.makeMultiListener(this, "onUnload", function(){ motion.unregister() })
+			return this
+		}
+		
+		proto.__pos__
+		proto.addProperty("_pos", function(){ 
+			if (this.__pos__ != undefined) {
+				return this.__pos__
+			} else {
+				return this.__pos__ = new Coord(this)
+			}
+		}, function(v: Coord) {
+			if (v == undefined) throw new Error("Attempt to place " + this + " at undefined position")
+			this.__pos__ = v
+			this._x = v.x
+			this._y = v.y
+		})
+		proto.place = function(v: Coord): MovieClip { 
+			this._pos = v
 			return this
 		}
 		

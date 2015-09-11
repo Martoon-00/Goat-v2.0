@@ -61,6 +61,7 @@ class skills.Skill {
 				toString: function(): String { return "[" + _this.name + ": ctx #" + this.id + "]" }
 			}
 			_this.state.setEndListener(SkillState.ACTIVE, Functions.makeMultiListener(curCtx, "onActivationEnd"))
+			curCtx.addProperty("targetRel", function(){ return target.getCoord().minus(_this.caster._pos) }, null)
 			
 			_this.state.setFinishListener(SkillState.CAST, function(){ _this.use() })
 			caster.casting.cast(curCtx)			

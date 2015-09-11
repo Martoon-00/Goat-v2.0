@@ -1,14 +1,24 @@
 ﻿import geom.*
 import coordinates.*
+import lang.*
 
 class geom.Shape {
-	function move(vector: Coord): Shape {
-		trace("No move defined for this class (" + this + ")")
+	function move(vector: Coord): Shape { 
+		throw new Error("No move defined for " + this)
 		return null
 	}
 	
-	function intersect(other: Shape): Intersection {
-		return Intersection.of(this, other)
+	function maxDistance(point: Coord): Number {
+		throw new Error("No maxDistance defined for " + this)
+		return null
 	}
 	
+	function draw(dr: Drawer): Void {
+		throw new Error("No draw defined for " + this)
+	}
+	
+	function getCenter(): Coord {
+		throw new Error("No draw defined for " + this)
+		return null
+	}
 }

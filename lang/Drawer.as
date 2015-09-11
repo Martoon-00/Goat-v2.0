@@ -15,9 +15,14 @@ class lang.Drawer {
 		return this
 	}
 	
+	function modify(t: Transform): Drawer {
+		trans = trans.compose(t)
+		return this
+	}
+	
 	function moveTo(): Drawer { 
 		var coord = new Coord(arguments)
-		mc.moveTo.call(mc, trans.applyX(coord.x, coord.y), trans.applyY(coord.x, coord.y)) 
+		mc.moveTo.call(mc, trans.applyX(coord.x, coord.y), trans.applyY(coord.x, coord.y))
 		return this
 	}
 	function lineTo(): Drawer { 

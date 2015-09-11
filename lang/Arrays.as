@@ -7,6 +7,8 @@ class lang.Arrays {
 		
 		proto.last = function() { return this[this.length - 1] }
 		
+		proto.remove = function(e) { Arrays.remove(this, e) }
+		
 		_global.ASSetPropFlags(proto, null, 0x7)
 	}
 	
@@ -21,7 +23,7 @@ class lang.Arrays {
 	}
 	
 	static function remove(ar: Array, e: Object): Array {
-		for (var i in ar) {
+		for (var i in ar) { 
 			if (ar[i] == e) delete ar[i]
 		}
 		return ar

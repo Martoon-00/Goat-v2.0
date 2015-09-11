@@ -1,8 +1,11 @@
-﻿class coordinates.Coord {
+﻿import lang.*
+
+class coordinates.Coord {
 	var x:Number;
 	var y:Number;
 	
 	static var ZERO = new Coord(0, 0)
+	
 	function Coord() {
 		if (arguments[0] instanceof Array) { 
 			Function(Coord).apply(this, arguments[0])
@@ -16,45 +19,83 @@
 			x = arguments[0];
 			y = arguments[1];
 		}
-		
-		watch("x", function(){ return arguments[1] })
-		watch("y", function(){ return arguments[1] })
 	}
-	function plus(c:Coord):Coord {
+	
+	function plus(c:Coord): Coord {
 		return new Coord(x + c.x, y + c.y);
 	}
-	function minus(c:Coord):Coord {
+	
+	function minus(c:Coord): Coord {
 		return new Coord(x - c.x, y - c.y);
 	}
-	function times(k:Number):Coord {
+	
+	function times(k:Number): Coord {
 		return new Coord(x * k, y * k);
 	}
-	function turn(k:Number):Coord {
+	
+	function turn(k:Number): Coord {
 		return new Coord(x * Math.cos(k) + -y * Math.sin(k), x * Math.sin(k) + y * Math.cos(k))
 	}
-	function rotate(k:Number):Coord {
+	
+	function rotate(k:Number): Coord {
 		return turn(k * Math.PI / 180)
 	}
-	function dist():Number {
+	
+	function neg(): Coord { 
+		return new Coord(-x, -y)
+	}
+	
+	function sqr(): Number {
+		return x * x + y * y
+	}
+	
+	function dist(): Number {
 		return Math.sqrt(x * x + y * y)
 	}
-	function ort():Coord {
+	
+	function ort(): Coord {
 		return this.times(1 / dist())
 	}
-	function angle():Number {
+	
+	function angle(): Number {
 		return Math.atan2(y, x)
 	}
-	function rotation():Number {
+	
+	function rotation(): Number {
 		return angle() / Math.PI * 180
 	}
-	function assign(o:Object):Void {
-		o._x = x;
-		o._y = y;
+	
+	function normal(): Coord {
+		return new Coord(-y, x)
 	}
-	function toString():String {
+	
+	function scalar(other: Coord): Number {
+		return x * other.x + y * other.y
+	}
+	
+	function vector(other: Coord): Number {
+		return x * other.y - y * other.x
+	}
+	
+	function isCollinear(other: Coord): Boolean {
+		return x * other.y == y * other.x
+	}
+	
+	function boundLength(range: Range): Coord {
+		var d: Number = dist()
+		if (d == 0) trace("Coord.boundLength: this == (0, 0)!")
+		return this.times(range.bound(d) / d)
+	}
+	
+	function toString(): String {
 		return "(" + x + ", " + y + ")";
 	}
-	function isBroken():Boolean{
+	
+	function equals(other: Coord) {
+		return x == other.x && y == other.y
+	}
+	
+	function isBroken(): Boolean{
 		return isNaN(x / 1) || isNaN(y / 1)
 	}
 	

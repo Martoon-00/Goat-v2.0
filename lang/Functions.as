@@ -1,9 +1,18 @@
-﻿class lang.Functions {
-	static var _lol = new lang.FuncInvoker(init)
-	
-	static function init(){
+﻿import lang.*
+
+class lang.Functions {
+	private static var _lol = new FuncInvoker(init)
+	private static function init() { 
+		var proto = arguments.callee.__proto__
+		
+		proto.defunc = function() { return this.apply(this, arguments) }
+		
+		_global.ASSetPropFlags(proto, null, 0x7)
+		
+		
 		_global.traceAll = function(){ trace(arguments.join("  ")) }
 	}
+	
 	
 	static var WATCH_ARRAY = function(prop, oldVal, newVal) {
 		oldVal.push(newVal)

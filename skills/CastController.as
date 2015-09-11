@@ -25,7 +25,7 @@ class skills.CastController {
 		var pointer = MovieClips.attachUniqueMovie(_global._field, "target_pointer", 100, {
 			color: 0xFF3000
 		})
-		skillCtx.target.getCoord().assign(pointer)
+		pointer._pos = skillCtx.target.getCoord()
 		
 		// interrupt on move
 		var moveDeli: Function

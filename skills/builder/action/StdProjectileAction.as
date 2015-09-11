@@ -38,9 +38,9 @@ class skills.builder.action.StdProjectileAction {
 			actions: function(skillCtx) { 
 				var mc = MovieClips.attachUniqueMovie(_global._field.upperEffects, "std_projectile", null, {
 					keeper: _this,
-					ctx: skillCtx
+					ctx: skillCtx,
+					_pos: skillCtx.caster._pos
 				})
-				skillCtx.caster.getCoord().assign(mc)
 				
 				if (!homing) mc.ctx.target = mc.ctx.target.fixed()
 			}

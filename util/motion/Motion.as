@@ -1,17 +1,21 @@
 ﻿import util.motion.*
 import coordinates.*
+import lang.*
 
 class Motion {
 	private var mc: MovieClip
 	private var manager: MotionManager
 	private var target: Function
 	
-	var unregister: Function
+	private var unregister: Function
+	
+	var onReach: Function
 	
 	function Motion(mc: MovieClip, manager: MotionManager, target: Function) {
 		this.mc = mc
 		this.target = target
 		setManager(manager)
+		Functions.makeMultiListener(this, "onReach")
 		
 		var _this = this
 		unregister = globals.Timing.addEnterFrame(function(){ _this.enterFrame() })
@@ -23,7 +27,7 @@ class Motion {
 	}
 	
 	function enterFrame() {
-		manager.step(new Coord(mc), target()).assign(mc)
+		mc._pos = manager.step(new Coord(mc), target())
 	}
 	
 }

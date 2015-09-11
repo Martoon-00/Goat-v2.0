@@ -3,6 +3,7 @@ import lang.*
 import coordinates.*
 import skills.*
 import phys.*
+import geom.*
 
 class creatures.Hero extends Creature {
 	
@@ -17,6 +18,9 @@ class creatures.Hero extends Creature {
 		_global._field.mouse.onHold = function(){  
 			_this.moving.target = _global._field.getCurTarget().getCoord() 
 		}
+		
+		hitbox = new Hitbox("hero", this, new Circle(Coord.ZERO, 18))
+//		hitbox = Hitbox.bofOf("hero", this, -18, 18, -18, 18)
 		
 		swapDepths(10000)
 	}

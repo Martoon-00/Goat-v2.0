@@ -17,11 +17,11 @@ class lang.Objects {
 	
 		proto.print = function(): Void {
 			iterate(this, function(name, value){ trace(name + " -> " + value) })
-			trace("---")
+			trace("---// end of print //---")
 		}
 		
 		proto.set = function(): Object {
-			for (var i = 1; i < arguments.length; i += 2) {
+			for (var i = 0; i < arguments.length; i += 2) {
 				this[arguments[i]] = arguments[i + 1]
 			}
 			return this
@@ -33,6 +33,9 @@ class lang.Objects {
 		}
 		
 		proto.trace = function() { trace(this) }
+	
+		proto.defunc = function() { return this }
+		
 		
 		_global.ASSetPropFlags(proto, null, 0x7)
 	}

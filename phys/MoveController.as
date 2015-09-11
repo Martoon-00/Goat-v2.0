@@ -24,7 +24,7 @@ class phys.MoveController {
 			}
 			
 			if (newVal != null) {
-				newVal.assign(_this.pointer)
+				_this.pointer._pos = newVal
 			}
 			return newVal
 		})
@@ -34,7 +34,7 @@ class phys.MoveController {
 	
 	function moveToTarget(){ 
 		if (target != null) {
-			if (owner.getCoord().minus(target).dist() < speed) {
+			if (owner._pos.minus(target).dist() < speed) {
 				target = null
 			} else {
 				var collision = approach(target)
@@ -45,7 +45,7 @@ class phys.MoveController {
 	}
 	
 	private function approach(target: Coord){ 
-		var path = target.minus(owner.getCoord())
+		var path = target.minus(owner._pos)
 		var delta = path.ort().times(Math.min(speed, path.dist()))
 		var res = owner.move(delta)
 		return res

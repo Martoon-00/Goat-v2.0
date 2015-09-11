@@ -23,6 +23,6 @@
 	}
 	
 	function orElse(other: Object): Object {
-		return obj[name] = obj[name] == null ? other : obj[name]
+		return obj[name] = (obj[name] == null ? other : obj[name])
 	}
 }
