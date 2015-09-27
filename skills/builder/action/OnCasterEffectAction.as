@@ -16,7 +16,7 @@ class skills.builder.action.OnCasterEffectAction {
 			actions: function(skillCtx) {   
 				var mc = MovieClips.attachUniqueMovie(_global._field, _this.effectMc, 10000, Objects.createCopy(_this.params, {
 					ctx: skillCtx  
-				})).setMotion(new ImmediateMotion(), function(){ return skillCtx.caster.getCoord() })
+				})).setMotion(new ImmediateMotion(), function(){ return skillCtx.caster._pos })
 			}
 		}
 	}

@@ -19,10 +19,11 @@ class creatures.Hero extends Creature {
 			_this.moving.target = _global._field.getCurTarget().getCoord() 
 		}
 		
-		hitbox = new Hitbox("hero", this, new Circle(Coord.ZERO, 18))
+		setHitbox(new Hitbox("hero", this, new Circle(Coord.ZERO, 18)))
 //		hitbox = Hitbox.bofOf("hero", this, -18, 18, -18, 18)
 		
 		swapDepths(10000)
+		
 	}
 
 	function getTargetType(): TargetType {

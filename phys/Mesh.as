@@ -1,16 +1,16 @@
-﻿import level.*
-import lang.*
+﻿import lang.*
 import coordinates.*
+import phys.*
 
-class level.Mesh {
-	private var objs: Array
+class phys.Mesh {
+	private var objs: Registrar
 	
 	private var keeper: MeshKeeper
 	private var i: Number
 	private var j: Number
 	
 	function Mesh(keeper: MeshKeeper, i: Number, j: Number) {  
-		objs = new Array()
+		objs = new Registrar()
 		this.keeper = keeper
 		this.i = i
 		this.j = j

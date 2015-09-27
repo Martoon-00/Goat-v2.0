@@ -1,11 +1,10 @@
 ﻿import phys.*
 import lang.*
 import coordinates.*
-import level.*
 import geom.*
 
-class level.MeshKeeper {
-	private static var debug = true
+class phys.MeshKeeper {
+	private static var debug = 0
 	
 	private var a: DiArray
 	
@@ -20,22 +19,25 @@ class level.MeshKeeper {
 	
 	private function getMesh(c: Coord) { return a.get(Math.floor(c.x / meshSize), Math.floor(c.y / meshSize)) }
 	
-	function register(obj: Hitbox) { 
-		getMesh(Coord.ZERO).objs.push(obj)
+	function register(obj: Hitbox): Function { 
+		return getMesh(Coord.ZERO).objs.register(obj)
 	}
 	
-	function move(obj: Hitbox, from: Coord, to: Coord): Void { 
+	function move(obj: Hitbox, from: Coord, to: Coord, remover: Function): Function { 
 		var fromMesh = getMesh(from)
 		var toMesh = getMesh(to)
-		if (fromMesh == toMesh) return;
+		if (fromMesh == toMesh) return remover;
 		
 		//getMeshesOnPath(from, to)
 		
-		fromMesh.objs.remove(obj)
-		toMesh.objs.push(obj)
+		if (!(remover instanceof Function)) throw new Error("MeshKeeper.move: remover is invalid")
+		remover()
+		return toMesh.objs.register(obj)
 	}
 	
 	function getMeshesOnPath(from: Coord, to: Coord) { 
+		if (from.isBroken() || to.isBroken()) throw new Error("getMeshesOnPath: accepted broken coord!")
+		
 		var delta = to.minus(from)
 		if (delta.x == 0) delta.x += 1e-5
 		
@@ -65,6 +67,11 @@ class level.MeshKeeper {
 		for (var i in meshes){ 
 			Arrays.concat(res, meshes[i].objs)
 		}
+		/*trace(res)
+		for (var i in res){
+			if (res[i]["mc"] + "" == "") trace("ololol!")
+		}
+		trace("----")*/
 		return res
 	}
 	

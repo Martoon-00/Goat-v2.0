@@ -5,10 +5,16 @@ import lang.*
 import phys.*
 
 class geom.Hitbox {
-	private static var debug = true
+	private static var debug = 0
 	
-	private static var boxes = {
-		__resolve: function(name: String){ return new Array() }
+	private static var _lol = new FuncInvoker(init)
+	private static var boxes: Object
+	private static function init() {
+		boxes = {
+			__resolve: function(name: String) {
+				return this[name] = new Array()
+			}
+		}
 	}
 	
 	var category: String
@@ -17,30 +23,28 @@ class geom.Hitbox {
 	private var parts: Array
 	private var size: Number
 	
-	var mc: Material
-	private var posGetter: Function
+	private var material: Material
 	private var lastPos: Coord
 	
-	function Hitbox(category: String, pos) {   
+	private var unregFromMesh: Function
+	
+	function Hitbox(category: String) {    
 		this.category = category
-		this.parts = arguments.slice(2)
-		this.size = 0
-		
-		if (pos instanceof Material){ 
-			posGetter = function(){ return Material(pos)._pos }
-			mc = Material(pos)
-		}
-		else if (pos instanceof Function) posGetter = pos
-		else if (pos instanceof Coord) posGetter = function(){ return pos }
-		else throw new Error("[Hitbox#<init>] Unexpected type of 2nd parameter: " + pos)
-		
-		for (var i in parts) size = Math.max(size, parts[i].maxDistance(Coord.ZERO))
-		_global._field.meshKeeper.register(this)
-		
 		index = boxes[category].push(this) - 1
 		
-		lastPos = Coord.ZERO
-		checkPos()
+		this.parts = arguments.slice(2)
+		size = new Stream(parts)
+			.map(function(){ return this.maxDistance(Coord.ZERO) })
+			.max()
+		
+		unregFromMesh = _global._field.meshKeeper.register(this)
+		
+		lastPos = Coord.ZERO  // in checkPos all shapes will be moved from their initial ZERO position to current one
+	}
+	
+	function setMaterial(material: Material): Hitbox {
+		this.material = material
+		return this
 	}
 	
 	static function boxOf(category: String, pos, x1: Number, x2: Number, y1: Number, y2: Number): Hitbox {
@@ -52,7 +56,7 @@ class geom.Hitbox {
 		)
 	}
 	
-	function intersect(other: Hitbox, move: Coord) { 
+	function intersect(other: Hitbox, move: Coord) {  
 		var _parts = other.parts
 		
 		checkPos()
@@ -95,25 +99,38 @@ class geom.Hitbox {
 	}
 	
 	function checkPos(): Void {  // moves shapes if linked movie has moved
-		var pos = posGetter()
+		var pos = material._pos
 		if (!lastPos.equals(pos)) { 
 			var delta = pos.minus(lastPos)
 			for (var i in parts) { 
 				parts[i].move(delta)
 			}
-				
-			_global._field.meshKeeper.move(this, lastPos, pos)
+			
+			unregFromMesh = _global._field.meshKeeper.move(this, lastPos, pos, unregFromMesh)
 			
 			lastPos = pos
 		}
+		
+		if (debug) { 
+			var name = "hitbox_" + category + "_" + index
+			var debug_mc = _global._field.hitboxes[name]
+			if (debug_mc == null) debug_mc = MovieClips.createEmptyMovieClip(_global._field.hitboxes, name, 0)
+			var dr = new Drawer(debug_mc)
+				.clear()
+				.lineStyle(3, 0xFF0000)
+				.beginFill(0xA0FFFF)
+			for (i in parts) parts[i].draw(dr)
+		}
 	}
 	
-	function destroy(): Void {
+	function destroy(): Void {  
 		if (index == -1) 
 			trace("Hitbox destroyed again!")
 		else {
 			delete boxes[category][index]
 			index = -1
+			
+			unregFromMesh()
 		}
 	}
 	

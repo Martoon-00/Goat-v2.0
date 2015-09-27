@@ -32,7 +32,7 @@ class lang.Objects {
 			return dist	
 		}
 		
-		proto.trace = function() { trace(this) }
+		proto.trace = function() { trace(this); return this }
 	
 		proto.defunc = function() { return this }
 		

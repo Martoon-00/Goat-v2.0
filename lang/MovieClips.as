@@ -31,6 +31,12 @@ class lang.MovieClips {
 			return this
 		}
 		
+		proto.drawer = function(): Drawer { return new Drawer(this) }
+		
+		proto.addListener = function(prop: String, listener: Function) { 
+			Functions.makeMultiListener(this, prop, listener)
+		}
+		
 		_global.ASSetPropFlags(proto, null, 0x7)
 	}
 	

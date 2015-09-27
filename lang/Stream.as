@@ -45,10 +45,10 @@
 		return new Stream(newValues)
 	}
 	
-	function min(): Stream {
+	function min() {
 		return collect(Number.POSITIVE_INFINITY, function(v: Number){ return Math.min(this, v) })
 	}
-	function max(): Stream {
+	function max() {
 		return collect(Number.NEGATIVE_INFINITY, function(v: Number){ return Math.max(this, v) })
 	}
 	

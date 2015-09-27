@@ -39,6 +39,7 @@ class lang.Range {
 	function intersect(other: Range) { return new Range(Math.max(a, other.a), Math.min(b, other.b)).check() }
 	
 	function iterate(f: Function): Void { 
+		if (isNaN(a / 1) || isNaN(b / 1)) throw new Error("Range.iterate accepted broken coordinates")
 		if (b > a) {
 			var q = Math.floor(a)
 			var w = Math.ceil(b)

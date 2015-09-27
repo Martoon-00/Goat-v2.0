@@ -43,7 +43,7 @@ class geom.Intersection {
 			
 			var b = s1.r.times(dv.scalar(s1.p)).minus(dv.scalar(dS))
 			var vec_prod = s1.r.times(s1.p.x * dv.y - s1.p.y * dv.x).minus(dS.vector(dv))
-			var q = vec_prod.sqr().times(-1).plus(dv.times(s2.R).sqr()).sqrt()
+			var q = vec_prod.sqr().times(-1).plus(dv.times(s2.R).sqr()).minus(1e-8).sqrt()
 			var r2_1: Range = solveLinear(dv.sqr(), 1, b.sub(q), 0)
 			var r2_2: Range = solveLinear(dv.sqr(), 1, b.add(q), 0)
 			
@@ -83,15 +83,24 @@ class geom.Intersection {
 	
 	
 	static function resistance(shape1: Shape, shape2: Shape): Coord {
-		if (shape2 instanceof Line) {
+		if (shape1 instanceof Circle && shape2 instanceof Line) {
+			var s1 = Circle(shape1)
 			var s2 = Line(shape2)
-			var s1 = shape1
+			
+			var dS = s1.S.minus(s2.S)
+			
+			var r1 = dS.minus(s2.p.times(s2.r.a))
+			if (r1.dist() <= s1.R + 1e-5) return r1
+			var r2 = dS.minus(s2.p.times(s2.r.b))
+			if (r2.dist() <= s1.R + 1e-5) return r2
 			
 			var n = s2.p.normal()
-			return s1.S.minus(s2.S).vector(s2.p) >= 0 ? n.neg() : n
-		} else if (shape2 instanceof Circle) {
-			
-		} else throw new Error(Strings.format("[nextMove] Such shape combination cannot be processed:\n%s\n%s", shape1, shape2))
+			return dS.vector(s2.p) >= 0 ? n.neg() : n
+		} else if (shape2 instanceof Circle && shape1 instanceof Circle) {
+			var s1 = shape1
+			var s2 = shape2
+			return s1.S.minus(s2.S)
+		} else throw new Error(Strings.format("[Intersection.resistance] Such shape combination cannot be processed:\n%s\n%s", shape1, shape2))
 	}
 	
 }

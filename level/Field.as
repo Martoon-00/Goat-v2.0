@@ -2,6 +2,7 @@
 import lang.*
 import creatures.*
 import level.*
+import phys.*
 import geom.*
 
 class level.Field extends MovieClipBase {

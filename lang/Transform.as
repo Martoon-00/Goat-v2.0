@@ -1,4 +1,4 @@
-﻿import coordinates
+﻿import coordinates.*
 
 class lang.Transform {
 	var xx: Number
@@ -32,8 +32,9 @@ class lang.Transform {
 		return new Transform(Math.cos(angle), Math.sin(angle), 0, -Math.sin(angle), Math.cos(angle), 0)
 	}
 	
-	static function MOVE(x: Number, y: Number) {
-		return new Transform(1, 0, x, 0, 1, y)
+	static function MOVE() {
+		var c = new Coord(arguments)
+		return new Transform(1, 0, c.x, 0, 1, c.y)
 	}
 	
 	static function AROUND(x: Number, y: Number, angle: Number): Transform {
